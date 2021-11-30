@@ -18,8 +18,10 @@
  *
  */
 
- const HDWalletProvider = require('truffle-hdwallet-provider-privkey');
- require('dotenv').config();
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+
+const fs = require("fs");
+const secrets = JSON.parse(fs.readFileSync(".secrets.json").toString().trim());
 
 module.exports = {
   /**
@@ -40,22 +42,34 @@ module.exports = {
     // options below to some value.
     //
     development: {
-     host: "127.0.0.1",     // Localhost (default: none)
-     port: 7545,            // Standard Ethereum port (default: none)
-     network_id: "5777",       // Any network (default: none)
+      host: "127.0.0.1", // Localhost (default: none)
+      port: 7545, // Standard Ethereum port (default: none)
+      network_id: "5777", // Any network (default: none)
     },
     ropsten: {
-      provider: function() {
+      provider: function () {
         return new HDWalletProvider(
-          //private keys array
-          [process.env.ROPSTEN_PK],
-          //url to ethereum node
-          process.env.ROPSTEN_PROVIDER
-        )
+          secrets.walletPrivateKey,
+          secrets.ropstenNodeUrl
+        );
       },
       gasPrice: 25000000000,
-      network_id: 3
-    }
+      network_id: 3,
+    },
+    rinkeby: {
+      provider: () =>
+        new HDWalletProvider(
+          secrets.walletPrivateKey,
+          secrets.rinkebyWSNodeUrl
+        ),
+      network_id: 4, // Rinkeby's id
+      gas: 2990000,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      gasPrice: 120000000000,
+      websocket: true,
+      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
+    },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
@@ -91,7 +105,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.6",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.10", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
@@ -100,7 +114,7 @@ module.exports = {
       //  },
       //  evmVersion: "byzantium"
       // }
-    }
+    },
   },
 
   // Truffle DB is currently disabled by default; to enable it, change enabled: false to enabled: true
@@ -110,6 +124,6 @@ module.exports = {
   // $ truffle migrate --reset --compile-all
 
   db: {
-    enabled: false
-  }
+    enabled: false,
+  },
 };
