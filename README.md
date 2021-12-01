@@ -1,0 +1,1 @@
+[![Coverage Status](https://coveralls.io/repos/github/RostykStakhiv/RUSD/badge.svg?branch=master)](https://coveralls.io/github/RostykStakhiv/RUSD?branch=master)
