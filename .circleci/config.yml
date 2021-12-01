@@ -25,14 +25,11 @@ jobs:
       - node/install-packages:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
-      # - run:
-      #     name: Install Node dependencies
-      #     command: |
-      #       sudo npm install
       - run:
           name: Run tests
           command: |
             truffle run coverage
+      - coveralls/upload
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
