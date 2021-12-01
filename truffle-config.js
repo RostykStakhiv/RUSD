@@ -21,7 +21,16 @@
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 const fs = require("fs");
-const secrets = JSON.parse(fs.readFileSync(".secrets.json").toString().trim());
+const secretsFilePath = ".secrets.json";
+let secrets;
+
+try {
+  if (fs.existsSync(secretsFilePath)) {
+    secrets = JSON.parse(fs.readFileSync(".secrets.json").toString().trim());
+  }
+} catch (err) {
+  console.error(err);
+}
 
 module.exports = {
   /**
