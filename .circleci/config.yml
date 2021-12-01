@@ -12,21 +12,22 @@ jobs:
     docker:
       - image: circleci/node:12
     steps:
-      - checkout
       - run:
           name: Delete any old node_modules
-          command:
+          command: |
             rm -rf node_modules/
       - run:
           name: Install truffle (globally)
-          command:
+          command: |
             sudo npm install -g truffle
-      - node/install:
+      - run:
+          name: Install Node dependencies
+          command: |
+            sudo npm install
       - run:
           name: Run tests
-          command:
+          command: |
             truffle run coverage
-      - coveralls/upload
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
