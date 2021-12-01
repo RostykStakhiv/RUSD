@@ -21,10 +21,11 @@ jobs:
           name: Install truffle (globally)
           command: |
             sudo npm install -g truffle
-      - run:
-          name: Install Node dependencies
-          command: |
-            sudo npm install
+      - node/install:
+      # - run:
+      #     name: Install Node dependencies
+      #     command: |
+      #       sudo npm install
       - run:
           name: Run tests
           command: |
